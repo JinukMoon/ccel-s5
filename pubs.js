@@ -8,19 +8,17 @@
 
   /* ---------- summary ---------- */
   const statuses = S.statusesPresent();
-  const byStatus = s => pubs.filter(p => p.status === s).length;
   const yearsAll = [...new Set(Object.keys(D.publication_counts).map(Number).concat(pubs.map(p => p.year)))].sort((a, b) => b - a);
-  $('pub-sub').textContent = `${fmt(pubs.length)} entries from ${yearsAll[yearsAll.length - 1]} to ${yearsAll[0]}: ` +
-    statuses.map(s => `${fmt(byStatus(s))} ${s}`).join(', ') + '. Newest first; CCEL members in bold.';
+  $('pub-sub').textContent = 'Newest first, grouped by year. CCEL members are shown in bold; within each year, papers not yet published follow the published ones.';
 
-  /* ---------- year strip (published per year, doubles as a year filter) ---------- */
+  /* ---------- year strip: published papers per year, small; each bar is a link that jumps to that year ---------- */
   const pubPerYear = new Map();
   pubs.forEach(p => { if (p.status === 'published') pubPerYear.set(p.year, (pubPerYear.get(p.year) || 0) + 1); });
   const stripYears = yearsAll.slice().reverse();
   const ymax = Math.max(...stripYears.map(y => pubPerYear.get(y) || 0));
   $('ystrip').innerHTML = stripYears.map(y => { const n = pubPerYear.get(y) || 0;
-    return `<button type="button" data-y="${y}" aria-pressed="false" aria-label="${y}: ${n} published papers. Filter by ${y}">
-      <span class="v">${n}</span><span class="b" style="height:${(78 * n / ymax).toFixed(1)}px"></span><span class="y"><span class="yl">${y}</span><span class="ys" aria-hidden="true">’${String(y).slice(2)}</span></span></button>`; }).join('');
+    return `<a href="#y${y}" data-y="${y}" aria-label="${y}: ${n} published papers. Jump to ${y}">
+      <span class="v" aria-hidden="true">${n}</span><span class="b" style="height:${(64 * n / ymax).toFixed(1)}px"></span><span class="y" aria-hidden="true"><span class="yl">${y}</span><span class="ys">’${String(y).slice(2)}</span></span></a>`; }).join('');
 
   $('ystrip').scrollLeft = $('ystrip').scrollWidth;   // narrow screens: open on the newest years
 
@@ -77,7 +75,7 @@
     $('result-count').textContent = filtered ? `Showing ${fmt(shown)} of ${fmt(pubs.length)} entries` : `All ${fmt(pubs.length)} entries`;
     $('f-reset').hidden = !filtered;
     $('chips').innerHTML = state.journal ? `<button type="button" class="chip" data-clear="journal" aria-label="Remove journal filter ${esc(state.journal)}">Journal: ${esc(state.journal)} <span aria-hidden="true">×</span></button>` : '';
-    document.querySelectorAll('#ystrip button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.y === state.year)));
+    document.querySelectorAll('#ystrip a').forEach(b => b.classList.toggle('on', b.dataset.y === state.year));
     const u = new URLSearchParams();
     ['q', 'year', 'status', 'area', 'journal'].forEach(k => { if (state[k]) u.set(k, state[k]); });
     if (state.lab) u.set('lab', '1');
@@ -91,10 +89,6 @@
   fl.addEventListener('change', () => { state.lab = fl.checked; apply(); });
   $('filters').addEventListener('submit', e => e.preventDefault());
   $('chips').addEventListener('click', e => { if (e.target.closest('[data-clear]')) { state.journal = ''; apply(); } });
-  $('ystrip').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    state.year = state.year === b.dataset.y ? '' : b.dataset.y; fy.value = state.year; apply();
-  });
   $('f-reset').addEventListener('click', () => {
     Object.assign(state, { q: '', year: '', status: '', area: '', lab: false, journal: '' });
     q.value = ''; fy.value = ''; fs.value = ''; fa.value = ''; fl.checked = false; apply();
@@ -104,8 +98,8 @@
   /* ---------- Selected view ---------- */
   $('sel-pins').innerHTML = S.pinsHtml('sel-');
   $('sel-hl').innerHTML = S.highlightsHtml();
-  $('sel-note').textContent = `${D.curation.selected_pins.length} papers chosen by the professor, grouped by research area`;
-  $('sel-hl-note').textContent = `${D.curation.recent_highlights.length} lab-led papers, filled by rule`;
+  $('sel-note').textContent = 'Chosen by the professor, grouped by research area';
+  $('sel-hl-note').textContent = 'Recent lab-led papers, filled by the rule below';
   $('sel-rules').textContent = D.curation.rules;
 
   /* ---------- Covers view: front covers, then back/inside pages (archive only) ---------- */
@@ -117,7 +111,7 @@
       <figcaption><b>${label}</b>${p ? `<br>${p.title}` : ''}</figcaption></figure></li>`;
   };
   const front = D.cover_publications.filter(c => c.kind !== 'back_page'), back = D.cover_publications.filter(c => c.kind === 'back_page');
-  $('cv-sum').textContent = `${D.cover_publications.length} journal covers: ${front.length} cover images and ${back.length} back or inside cover pages. Newest first.`;
+  $('cv-sum').textContent = 'Journal covers featuring CCEL papers, newest first. Back and inside cover pages follow.';
   $('cv-front').innerHTML = front.map(card).join('');
   $('cv-back').innerHTML = back.map(card).join('');
   if (!back.length) $('cv-back-h').hidden = true;

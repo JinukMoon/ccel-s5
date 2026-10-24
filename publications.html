@@ -18,12 +18,11 @@
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Main">
         <ul>
-          <li><a href="index.html#glance">At a glance</a></li>
-          <li><a href="index.html#research">Research</a></li>
+          <li><a href="index.html">Welcome</a></li>
+          <li><a href="members.html#professor">Professor</a></li>
+          <li><a href="members.html">Members</a></li>
+          <li><a href="research.html">Research</a></li>
           <li><a href="publications.html" aria-current="page">Publications</a></li>
-          <li><a href="members.html">People</a></li>
-          <li><a href="index.html#news">News</a></li>
-          <li><a href="index.html#join">Join Us</a></li>
           <li><a href="index.html#contact">Contact</a></li>
         </ul>
       </nav>
@@ -37,15 +36,15 @@
     <p class="page-sub" id="pub-sub"></p>
     <div class="tabs" role="tablist" aria-label="Publication views">
       <a role="tab" href="#all" id="tab-all" aria-controls="view-all">All publications</a>
-      <a role="tab" href="#selected" id="tab-selected" aria-controls="view-selected">Selected</a>
+      <a role="tab" href="#selected" id="tab-selected" aria-controls="view-selected">Selected and recent highlights</a>
       <a role="tab" href="#covers" id="tab-covers" aria-controls="view-covers">Journal covers</a>
     </div>
   </div>
 
   <section class="wrap tabpanel" id="view-all" role="tabpanel" aria-labelledby="tab-all">
     <figure class="ystrip-fig">
-      <figcaption id="ystrip-cap">Published papers per year. Select a year to filter the list.</figcaption>
-      <div class="ystrip" id="ystrip" role="group" aria-labelledby="ystrip-cap"></div>
+      <figcaption id="ystrip-cap">Published papers per year. Select a year to jump to it in the list.</figcaption>
+      <nav class="ystrip" id="ystrip" aria-labelledby="ystrip-cap"></nav>
     </figure>
     <form class="filters" role="search" id="filters">
       <div class="f-q"><label for="f-q">Search title, authors or journal</label><input type="search" id="f-q" autocomplete="off" placeholder="e.g. exsolution, Nature Commun., Choung"></div>
@@ -79,8 +78,8 @@
   <div class="wrap foot-in">
     <div><img class="ccel-logo" src="_shared/img/logo2.png" alt="CCEL logo" width="170" height="87" loading="lazy"><p id="foot-data" style="margin-top:14px;max-width:560px"></p></div>
     <ul class="foot-links">
-      <li><a href="index.html#research">Research</a></li><li><a href="publications.html">Publications</a></li>
-      <li><a href="members.html">People</a></li><li><a href="index.html#join">Join Us</a></li><li><a href="index.html#contact">Contact</a></li>
+      <li><a href="members.html">Members</a></li><li><a href="research.html">Research</a></li>
+      <li><a href="publications.html">Publications</a></li><li><a href="index.html#contact">Contact</a></li>
     </ul>
   </div>
 </footer>

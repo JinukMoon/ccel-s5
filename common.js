@@ -106,6 +106,15 @@
       <h3>${g.area ? `<span class="numtag">${esc(g.area)}</span>${esc(areaTitle(g.area))}` : 'Other'}</h3>
       <ol class="cites">${g.items.map(p => `<li class="cite anchor" id="${idPrefix}${p.no}"><div>${citeHtml(p, { area: false })}</div>${coverThumb(p)}</li>`).join('')}</ol></div>`).join('');
   }
+  // key papers of one research area: the professor's pins for that area, then recent highlights whose
+  // publications[].area matches (both curated lists, used as given), at most `max`
+  function keyPapers(numeral, max = 3) {
+    const out = [];
+    D.curation.selected_pins.filter(x => x.area === numeral && byNo.has(x.no)).forEach(x => out.push([byNo.get(x.no), 'Selected']));
+    D.curation.recent_highlights.map(n => byNo.get(n)).filter(p => p && p.area === numeral && !out.some(o => o[0] === p))
+      .forEach(p => out.push([p, 'Recent highlight']));
+    return out.slice(0, max);
+  }
   function highlightsHtml() {
     return D.curation.recent_highlights.map(n => byNo.get(n)).filter(Boolean).map(p => {
       const th = coverThumb(p);
@@ -162,8 +171,7 @@
   function initFooter() {
     const el = document.getElementById('foot-data');
     if (!el) return;
-    el.innerHTML = `${esc(D.lab.name)}<br>${esc(D.contact.address)}<br>
-      Publication list curated ${esc(D.curation.updated_at)} · ${fmt(stats.total)} entries, ${fmt(stats.published)} published.`;
+    el.innerHTML = `${esc(D.lab.name)}<br>${esc(D.lab.affiliation)}`;
   }
   // after JS rendering changes the layout, land on the requested anchor again
   function settleHash() {
@@ -172,14 +180,8 @@
     if (t) requestAnimationFrame(() => t.scrollIntoView({ block: 'start' }));
   }
   const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // charts draw in once when they enter the viewport
-  function drawIn(els) {
-    if (reduceMotion() || !('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.2 });
-    els.forEach(e => io.observe(e));
-  }
 
   window.S5 = { D, SH, esc, plain, asset, href, fmt, pct, cap, pubs, byNo, published, areaByNum, areaTitle, statusesPresent,
-    coverOf, pubOfCover, authorsHtml, sourceLine, ifHtml, pubLink, citeHtml, coverThumb, pinsHtml, highlightsHtml, linkIcons, profLinks, stats,
-    initHeader, initFooter, settleHash, reduceMotion, drawIn };
+    coverOf, pubOfCover, authorsHtml, sourceLine, ifHtml, pubLink, citeHtml, coverThumb, pinsHtml, keyPapers, highlightsHtml, linkIcons, profLinks, stats,
+    initHeader, initFooter, settleHash, reduceMotion };
 })();

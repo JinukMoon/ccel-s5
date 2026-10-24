@@ -1,14 +1,13 @@
 /* People page: professor, current members and alumni from window.CCEL. Names and details stay in English. */
 (function () {
   'use strict';
-  const S = window.S5, C = window.S5charts;
+  const S = window.S5;
   const { D, esc, stats, asset, linkIcons, profLinks } = S;
   const $ = id => document.getElementById(id);
   const typeLabel = t => t ? S.cap(t) : 'Type not set';
-  const count = (groups, t) => groups.reduce((n, g) => n + g.people.filter(p => p.type === t).length, 0);
 
-  $('people-sub').textContent = `${stats.members} current members (${count(D.members, 'computational')} computational, ${count(D.members, 'experimental')} experimental) ` +
-    `and ${stats.alumni} alumni, led by ${D.professor.name}.`;
+  $('people-sub').innerHTML = `Current members and alumni of the ${esc(D.lab.name)}, led by ${esc(D.professor.name)}. ` +
+    `<span class="legend" style="display:inline-flex;margin-left:6px"><span><i class="c"></i>Computational</span><span><i class="e"></i>Experimental</span></span>`;
 
   const P = D.professor;
   // Education lines are verbatim legacy text; only the check marks and " , " spacing are tidied for display.
@@ -20,7 +19,9 @@
     <p class="meta"><a href="mailto:${esc(P.email)}">${esc(P.email)}</a><br>${esc(D.contact.professor_office)}</p>
     <p style="margin-top:12px">${linkIcons(P.name, profLinks())}</p>
     ${edu.length ? `<details class="fold"><summary>Education</summary><ul class="edu">${edu.map(l => `<li>${esc(l)}</li>`).join('')}</ul></details>` : ''}</div>`;
-  C.peopleChart($('ch-people-body'));
+  const gp = $('group-photo');
+  if (D.contact.group_photo) { gp.src = asset(D.contact.group_photo); $('group-cap').textContent = D.lab.name; }
+  else $('group-fig').remove();
 
   const photo = (p, w, h) => p.photo
     ? `<img class="pphoto" src="${esc(asset(p.photo))}" alt="${esc(p.name)}" loading="lazy" width="${w}" height="${h}">`
@@ -43,8 +44,8 @@
     <ul class="pgrid${prefix === 'al' ? ' alum-grid' : ''}">${g.people.map(card).join('')}</ul></div>`).join('');
   $('member-groups').innerHTML = groupsHtml(D.members, memberCard, 'mg');
   $('alumni-groups').innerHTML = groupsHtml(D.alumni, alumCard, 'al');
-  $('members-note').textContent = `${stats.members} people in ${D.members.length} groups`;
-  $('alumni-note').textContent = `${stats.alumni} people; current position as last reported`;
+  $('members-note').textContent = 'Grouped as in the lab list';
+  $('alumni-note').textContent = 'Current position as last reported';
 
   // computational / experimental filter
   const filter = $('type-filter');
@@ -66,6 +67,5 @@
 
   S.initHeader();
   S.initFooter();
-  S.drawIn([...document.querySelectorAll('.chart')]);
   S.settleHash();
 })();

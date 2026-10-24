@@ -4,7 +4,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>People · CCEL · Seoul National University</title>
+<title>Members · CCEL · Seoul National University</title>
 <link rel="stylesheet" href="_shared/brand/brand.css">
 <link rel="stylesheet" href="site.css">
 <link rel="stylesheet" href="pages.css">
@@ -18,12 +18,11 @@
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Main">
         <ul>
-          <li><a href="index.html#glance">At a glance</a></li>
-          <li><a href="index.html#research">Research</a></li>
+          <li><a href="index.html">Welcome</a></li>
+          <li><a href="members.html#professor">Professor</a></li>
+          <li><a href="members.html" aria-current="page">Members</a></li>
+          <li><a href="research.html">Research</a></li>
           <li><a href="publications.html">Publications</a></li>
-          <li><a href="members.html" aria-current="page">People</a></li>
-          <li><a href="index.html#news">News</a></li>
-          <li><a href="index.html#join">Join Us</a></li>
           <li><a href="index.html#contact">Contact</a></li>
         </ul>
       </nav>
@@ -33,7 +32,7 @@
 
 <main id="main">
   <div class="wrap page-head">
-    <h1>People</h1>
+    <h1>Members</h1>
     <p class="page-sub" id="people-sub"></p>
     <nav class="tabs" aria-label="On this page">
       <a href="#professor">Professor</a><a href="#members">Current members</a><a href="#alumni">Alumni</a>
@@ -44,10 +43,7 @@
     <h2 class="sr-only" id="prof-h">Professor</h2>
     <div class="prof-row">
       <div class="prof" id="prof"></div>
-      <figure class="chart" id="ch-people" aria-labelledby="ch-people-h">
-        <div class="chart-head"><h3 id="ch-people-h">Group in numbers</h3><p class="legend"><span><i class="c"></i>Computational</span><span><i class="e"></i>Experimental</span></p></div>
-        <div class="chart-body" id="ch-people-body"></div>
-      </figure>
+      <figure class="group-photo" id="group-fig"><img id="group-photo" alt="CCEL group photo" loading="lazy" width="6944" height="4496"><figcaption class="small" id="group-cap"></figcaption></figure>
     </div>
   </section>
 
@@ -76,15 +72,14 @@
   <div class="wrap foot-in">
     <div><img class="ccel-logo" src="_shared/img/logo2.png" alt="CCEL logo" width="170" height="87" loading="lazy"><p id="foot-data" style="margin-top:14px;max-width:560px"></p></div>
     <ul class="foot-links">
-      <li><a href="index.html#research">Research</a></li><li><a href="publications.html">Publications</a></li>
-      <li><a href="members.html">People</a></li><li><a href="index.html#join">Join Us</a></li><li><a href="index.html#contact">Contact</a></li>
+      <li><a href="members.html">Members</a></li><li><a href="research.html">Research</a></li>
+      <li><a href="publications.html">Publications</a></li><li><a href="index.html#contact">Contact</a></li>
     </ul>
   </div>
 </footer>
 
 <script src="_shared/content.js"></script>
 <script src="common.js"></script>
-<script src="charts.js"></script>
 <script src="people.js"></script>
 </body>
 </html>
