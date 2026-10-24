@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CCEL · Computational Catalysis and Emerging Materials Laboratory · Seoul National University</title>
+<meta name="description" content="Computational Catalysis and Emerging Materials Laboratory (CCEL), Department of Materials Science and Engineering, Seoul National University.">
+<link rel="stylesheet" href="_shared/brand/brand.css">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="site-bar">
+    <div class="wrap bar-in">
+      <a class="brand" href="index.html" aria-label="CCEL home"><img class="ccel-logo" src="_shared/img/logo2.png" alt="CCEL — Computational Catalysis and Emerging Materials Laboratory" width="200" height="102"></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html#glance">At a glance</a></li>
+          <li><a href="index.html#research">Research</a></li>
+          <li><a href="publications.html">Publications</a></li>
+          <li><a href="members.html">People</a></li>
+          <li><a href="index.html#news">News</a></li>
+          <li><a href="index.html#join">Join Us</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <!-- Hero stage: a short scroll-scrubbed clip behind a solid identity panel; resolves into the key figures.
+       Starts static (no JS, reduced motion); home.js switches it to scrubbing. -->
+  <section class="stage-wrap is-static" aria-labelledby="lab-name">
+    <div class="stage">
+      <div class="stage-media" aria-hidden="true">
+        <img class="stage-poster" alt="" hidden>
+        <noscript><img class="stage-poster" src="_shared/scroll/hero_poster.webp" alt=""></noscript>
+        <canvas class="stage-canvas"></canvas>
+        <div class="stage-veil"></div>
+      </div>
+      <div class="wrap stage-inner">
+        <div class="stage-panel">
+          <p class="eyebrow" id="lab-aff"></p>
+          <h1 id="lab-name"></h1>
+          <p class="lede" id="lab-id"></p>
+          <p class="stage-links"><a href="#glance">Lab at a glance</a><a href="#research">Research areas</a><a href="#publications">Selected publications</a></p>
+        </div>
+      </div>
+      <div class="stage-strip">
+        <div class="wrap"><ul class="figs" id="keyfigs" aria-label="Key figures"></ul></div>
+      </div>
+    </div>
+  </section>
+  <noscript><div class="wrap"><p class="lede" style="padding:24px 0">This page renders its content from the lab's data file; please enable JavaScript.</p></div></noscript>
+
+  <section class="sec" id="glance" aria-labelledby="glance-h">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="glance-h">Lab at a glance</h2><p class="sec-note" id="glance-note"></p></div>
+      <div class="charts">
+        <figure class="chart wide" id="ch-years" aria-labelledby="ch-years-h">
+          <div class="chart-head"><h3 id="ch-years-h">Published papers per year</h3><p class="small" id="ch-years-sum"></p></div>
+          <div class="chart-body" id="ch-years-body"></div>
+          <figcaption id="ch-years-cap"></figcaption>
+        </figure>
+        <figure class="chart" id="ch-areas" aria-labelledby="ch-areas-h">
+          <div class="chart-head"><h3 id="ch-areas-h">Papers by research area</h3><div id="ch-areas-mode"></div></div>
+          <div class="chart-body" id="ch-areas-body"></div>
+          <figcaption>Each paper carries one research area (I–V) in the publication list. Select a row to see those papers.</figcaption>
+        </figure>
+        <figure class="chart" id="ch-journals" aria-labelledby="ch-journals-h">
+          <div class="chart-head"><h3 id="ch-journals-h">Most frequent journals</h3><p class="small">Published papers, all years</p></div>
+          <div class="chart-body" id="ch-journals-body"></div>
+          <figcaption>Journal names as recorded in the publication list. Select a row to list the papers.</figcaption>
+        </figure>
+        <figure class="chart wide" id="ch-people" aria-labelledby="ch-people-h">
+          <div class="chart-head"><h3 id="ch-people-h">People</h3><p class="legend"><span><i class="c"></i>Computational</span><span><i class="e"></i>Experimental</span></p></div>
+          <div class="chart-body" id="ch-people-body"></div>
+          <figcaption>Current members and alumni by group, as listed on the People page.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="research" aria-labelledby="research-h">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="research-h">Research</h2><p class="sec-note" id="research-note"></p></div>
+      <div class="research-intro">
+        <div>
+          <p class="lede" id="research-headline"></p>
+          <div id="research-intro" style="margin-top:16px"></div>
+          <details class="fold"><summary>Lab introduction (Korean)</summary><p lang="ko" id="about-ko"></p></details>
+        </div>
+        <figure><img id="research-img" alt="" loading="lazy"></figure>
+      </div>
+      <ol class="areas" id="areas"></ol>
+    </div>
+  </section>
+
+  <section class="sec" id="publications" aria-labelledby="pubs-h">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="pubs-h">Selected Publications</h2><p class="sec-note" id="pins-note"></p></div>
+      <div id="pins"></div>
+      <p class="more" style="margin-top:28px"><a href="publications.html" id="all-pubs-link">All publications</a></p>
+    </div>
+  </section>
+
+  <section class="sec" id="highlights" aria-labelledby="hl-h">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="hl-h">Recent Highlights</h2><p class="sec-note" id="hl-note"></p></div>
+      <ul class="hl-grid" id="hl"></ul>
+      <details class="fold" style="margin-top:28px"><summary>How this list is filled</summary><p class="small" id="hl-rules"></p></details>
+      <p class="more" style="margin-top:20px"><a href="publications.html#covers" id="covers-link">Journal covers</a></p>
+    </div>
+  </section>
+
+  <section class="sec" id="people" aria-labelledby="people-h">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="people-h">People</h2><p class="sec-note" id="people-note"></p></div>
+      <div class="prof" id="prof"></div>
+      <div class="roster" id="roster"></div>
+      <p class="more" style="margin-top:24px"><a href="members.html">Full People page with alumni</a></p>
+      <figure class="group-photo"><img id="group-photo" alt="CCEL group photo" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section class="sec" id="news" aria-labelledby="news-h">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="news-h">News</h2></div>
+      <ol class="news" id="news-list"></ol>
+    </div>
+  </section>
+
+  <div class="wrap two">
+    <section class="sec" id="join" aria-labelledby="join-h">
+      <div class="sec-head"><h2 id="join-h">Join Us</h2></div>
+      <p>Open positions are announced in Korean. Applications and questions go to <span id="join-mail"></span>.</p>
+      <details class="fold" open><summary>Recruitment notice (Korean)</summary><p lang="ko" id="opening-ko"></p></details>
+    </section>
+    <section class="sec" id="contact" aria-labelledby="contact-h">
+      <div class="sec-head"><h2 id="contact-h">Contact</h2></div>
+      <dl class="dl" id="contact-dl"></dl>
+    </section>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-in">
+    <div><img class="ccel-logo" src="_shared/img/logo2.png" alt="CCEL logo" width="170" height="87" loading="lazy"><p id="foot-data" style="margin-top:14px;max-width:560px"></p></div>
+    <ul class="foot-links">
+      <li><a href="index.html#research">Research</a></li><li><a href="publications.html">Publications</a></li>
+      <li><a href="members.html">People</a></li><li><a href="index.html#join">Join Us</a></li><li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="_shared/content.js"></script>
+<script src="common.js"></script>
+<script src="charts.js"></script>
+<script src="home.js"></script>
+</body>
+</html>
