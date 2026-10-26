@@ -19,11 +19,11 @@
       <nav id="site-nav" class="site-nav" aria-label="Main">
         <ul>
           <li><a href="index.html">Welcome</a></li>
-          <li><a href="members.html#professor">Professor</a></li>
+          <li><a href="professor.html">Professor</a></li>
           <li><a href="members.html" aria-current="page">Members</a></li>
           <li><a href="research.html">Research</a></li>
           <li><a href="publications.html">Publications</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -34,37 +34,37 @@
   <div class="wrap page-head">
     <h1>Members</h1>
     <p class="page-sub" id="people-sub"></p>
-    <nav class="tabs" aria-label="On this page">
-      <a href="#professor">Professor</a><a href="#members">Current members</a><a href="#alumni">Alumni</a>
-    </nav>
   </div>
 
-  <section class="wrap sub-sec" id="professor" aria-labelledby="prof-h">
-    <h2 class="sr-only" id="prof-h">Professor</h2>
-    <div class="prof-row">
-      <div class="prof" id="prof"></div>
-      <figure class="group-photo" id="group-fig"><img id="group-photo" alt="CCEL group photo" loading="lazy" width="6944" height="4496"><figcaption class="small" id="group-cap"></figcaption></figure>
+  <div class="wrap viewbar">
+    <div class="vb-row">
+      <nav class="viewswitch" aria-label="Members or alumni">
+        <a href="#members" data-view="members">Current members</a><a href="#alumni" data-view="alumni">Alumni</a>
+      </nav>
+      <nav class="gjump" id="jump-members" aria-label="Current member groups"></nav>
+      <nav class="gjump" id="jump-alumni" aria-label="Alumni groups" hidden></nav>
     </div>
-  </section>
-
-  <div class="wrap filter-bar">
-    <span class="small" id="filter-label">Show</span>
-    <span class="seg" role="group" aria-labelledby="filter-label" id="type-filter">
-      <button type="button" data-t="" aria-pressed="true">Everyone</button>
-      <button type="button" data-t="computational" aria-pressed="false">Computational</button>
-      <button type="button" data-t="experimental" aria-pressed="false">Experimental</button>
-    </span>
-    <span class="small" id="filter-count" aria-live="polite"></span>
+    <div class="vb-row vb-filter">
+      <span class="small" id="filter-label">Show</span>
+      <span class="seg" role="group" aria-labelledby="filter-label" id="type-filter">
+        <button type="button" data-t="" aria-pressed="true">Everyone</button>
+        <button type="button" data-t="computational" aria-pressed="false">Computational</button>
+        <button type="button" data-t="experimental" aria-pressed="false">Experimental</button>
+      </span>
+      <span class="legend" aria-hidden="true"><span><i class="c"></i>Computational</span><span><i class="e"></i>Experimental</span></span>
+      <span class="small" id="filter-count" aria-live="polite"></span>
+    </div>
   </div>
 
-  <section class="wrap sub-sec" id="members" aria-labelledby="members-h">
+  <section class="wrap sub-sec view" id="members" aria-labelledby="members-h">
     <div class="sec-head"><h2 id="members-h">Current members</h2><p class="sec-note" id="members-note"></p></div>
     <div id="member-groups"></div>
   </section>
 
-  <section class="wrap sub-sec" id="alumni" aria-labelledby="alumni-h">
+  <section class="wrap sub-sec view" id="alumni" aria-labelledby="alumni-h" hidden>
     <div class="sec-head"><h2 id="alumni-h">Alumni</h2><p class="sec-note" id="alumni-note"></p></div>
     <div id="alumni-groups"></div>
+    <p class="more back-row"><a href="#members" data-view="members">Back to current members</a></p>
   </section>
 </main>
 
@@ -72,8 +72,8 @@
   <div class="wrap foot-in">
     <div><img class="ccel-logo" src="_shared/img/logo2.png" alt="CCEL logo" width="170" height="87" loading="lazy"><p id="foot-data" style="margin-top:14px;max-width:560px"></p></div>
     <ul class="foot-links">
-      <li><a href="members.html">Members</a></li><li><a href="research.html">Research</a></li>
-      <li><a href="publications.html">Publications</a></li><li><a href="index.html#contact">Contact</a></li>
+      <li><a href="index.html">Welcome</a></li><li><a href="professor.html">Professor</a></li><li><a href="members.html">Members</a></li>
+      <li><a href="research.html">Research</a></li><li><a href="publications.html">Publications</a></li><li><a href="contact.html">Contact</a></li>
     </ul>
   </div>
 </footer>

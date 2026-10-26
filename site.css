@@ -227,12 +227,7 @@ details.fold p { margin-top: 10px; font-size: 16px; line-height: 1.75; color: va
   .cite-title { font-size: 16.5px; }
 }
 
-/* ---------- people (members.html) ---------- */
-.prof { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 32px; align-items: start; }
-.prof img { width: 180px; height: auto; display: block; border: 1px solid var(--line); }
-.prof h3 { font-size: 24px; }
-.prof .role { margin-top: 6px; font-size: 15.5px; }
-.prof .meta { margin-top: 10px; font-size: 15px; }
+/* ---------- people: link icons and the computational / experimental mark ---------- */
 .icons { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; vertical-align: middle; }
 .icons a { display: inline-flex; width: 30px; height: 30px; align-items: center; justify-content: center; border-radius: 4px;
   color: var(--navy); border: 1px solid var(--line-2); background: #fff; }
@@ -241,13 +236,6 @@ details.fold p { margin-top: 10px; font-size: 16px; line-height: 1.75; color: va
 .tmark { width: 9px; height: 9px; border-radius: 2px; flex: none; background: var(--navy); display: inline-block; }
 .tmark.experimental { background: var(--orange); }
 .tmark.none { background: var(--line-2); }
-.group-photo { margin: 40px 0 0; }
-.group-photo img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; object-position: 50% 70%; border: 1px solid var(--line); }
-@media (max-width: 600px) {
-  .prof { grid-template-columns: 96px minmax(0, 1fr); gap: 16px; }
-  .prof img { width: 96px; }
-  .prof h3 { font-size: 20px; }
-}
 
 /* ---------- landing: news + open position, selected publications, about, contact ---------- */
 .news-open { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }

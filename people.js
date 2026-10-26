@@ -1,70 +1,124 @@
-/* People page: professor, current members and alumni from window.CCEL. Names and details stay in English. */
+/* Members page (round v6): current members first, alumni behind the Alumni button. One person per row, as on
+   source/members.html: photo on the left, name with the computational/experimental mark, degrees, email, office,
+   research area and link icons on the right. Everything from window.CCEL; names and details stay in English.
+   The view follows the URL hash: #alumni (or an alumni group id) shows the alumni, anything else the current members. */
 (function () {
   'use strict';
   const S = window.S5;
-  const { D, esc, stats, asset, linkIcons, profLinks } = S;
+  const { D, esc, asset, linkIcons } = S;
   const $ = id => document.getElementById(id);
   const typeLabel = t => t ? S.cap(t) : 'Type not set';
-
-  $('people-sub').innerHTML = `Current members and alumni of the ${esc(D.lab.name)}, led by ${esc(D.professor.name)}. ` +
-    `<span class="legend" style="display:inline-flex;margin-left:6px"><span><i class="c"></i>Computational</span><span><i class="e"></i>Experimental</span></span>`;
-
   const P = D.professor;
-  // Education lines are verbatim legacy text; only the check marks and " , " spacing are tidied for display.
-  const edu = (P.sections && P.sections.Education || []).filter(l => l.trim() && l.trim() !== 'Education')
-    .map(l => l.replace(/^✔\s*/, '').replace(/\s+,\s*/g, ', '));
-  $('prof').innerHTML = `<img src="${esc(asset(P.photo))}" alt="${esc(P.name)}" width="180" height="231">
-    <div><p class="eyebrow">Principal investigator</p><h3 style="margin-top:8px">${esc(P.name)}</h3>
-    <p class="role">${esc(P.title)}</p>${P.roles.map(r => `<p class="role">${esc(r)}</p>`).join('')}
-    <p class="meta"><a href="mailto:${esc(P.email)}">${esc(P.email)}</a><br>${esc(D.contact.professor_office)}</p>
-    <p style="margin-top:12px">${linkIcons(P.name, profLinks())}</p>
-    ${edu.length ? `<details class="fold"><summary>Education</summary><ul class="edu">${edu.map(l => `<li>${esc(l)}</li>`).join('')}</ul></details>` : ''}</div>`;
-  const gp = $('group-photo');
-  if (D.contact.group_photo) { gp.src = asset(D.contact.group_photo); $('group-cap').textContent = D.lab.name; }
-  else $('group-fig').remove();
 
-  const photo = (p, w, h) => p.photo
-    ? `<img class="pphoto" src="${esc(asset(p.photo))}" alt="${esc(p.name)}" loading="lazy" width="${w}" height="${h}">`
-    : `<span class="pphoto none" aria-hidden="true"></span>`;
-  const memberCard = p => `<li class="pcard" data-type="${esc(p.type || '')}">${photo(p, 400, 500)}
-    <div class="pinfo"><h4>${esc(p.name)}</h4>
-      <p class="ptype"><i class="tmark ${esc(p.type || 'none')}" aria-hidden="true"></i>${typeLabel(p.type)}</p>
-      ${p.research_area ? `<p class="parea">${esc(p.research_area)}</p>` : ''}
-      ${p.degrees && p.degrees.length ? `<ul class="pdeg">${p.degrees.map(d => `<li>${esc(d)}</li>`).join('')}</ul>` : ''}
-      <p class="pcontact">${p.email ? `<a href="mailto:${esc(p.email)}">${esc(p.email)}</a>` : ''}${p.email && p.office ? '<br>' : ''}${p.office ? esc(p.office) : ''}</p>
-      ${linkIcons(p.name, p.links)}</div></li>`;
-  const alumCard = p => `<li class="pcard alum" data-type="${esc(p.type || '')}">${photo(p, 400, 500)}
-    <div class="pinfo"><h4>${esc(p.name)}</h4>
-      ${p.current_position ? `<p class="pnow">${esc(p.current_position)}</p>` : ''}
-      <p class="ptype"><i class="tmark ${esc(p.type || 'none')}" aria-hidden="true"></i>${typeLabel(p.type)}</p>
-      ${p.degrees && p.degrees.length ? `<ul class="pdeg">${p.degrees.map(d => `<li>${esc(d)}</li>`).join('')}</ul>` : ''}
-      ${linkIcons(p.name, p.links)}</div></li>`;
-  const groupsHtml = (groups, card, prefix) => groups.map((g, i) => `<div class="pgroup" id="${prefix}-${i}">
+  $('people-sub').innerHTML = `Current members of the ${esc(D.lab.name)}, led by <a href="professor.html">${esc(P.name)}</a>. ` +
+    'Former members are listed under Alumni.';
+
+  /* ---------- one row per person ---------- */
+  // "Miyeon Kim (Chief of Lab)" -> name + small note; the text itself is unchanged
+  const splitName = n => { const m = /^(.*?)\s*\((.*)\)\s*$/.exec(n || ''); return m ? [m[1], m[2]] : [n || '', '']; };
+  // degree lines start with the degree, as on the legacy page ("PhD Chemical Engineering, POSTECH (2024)")
+  const DEG = /^(Postdoc \/ Research Professor|Research Professor|Postdoc|MS\/PhD Course|PhD Course|PhD|MS|BS)\s+(.+)$/;
+  const degLine = d => { const m = DEG.exec(d); return m ? `<li><b>${esc(m[1])}</b><span>${esc(m[2])}</span></li>` : `<li><span>${esc(d)}</span></li>`; };
+  const photo = p => p.photo
+    ? `<img class="rphoto" src="${esc(asset(p.photo))}" alt="${esc(splitName(p.name)[0])}" loading="lazy" decoding="async" width="400" height="500">`
+    : `<span class="rphoto none" aria-hidden="true"></span>`;
+  const row = (p, alum) => {
+    const [name, note] = splitName(p.name);
+    const meta = [
+      p.email ? ['Email', `<a href="mailto:${esc(p.email)}">${esc(p.email)}</a>`] : null,
+      // keep phone numbers on one line (display only)
+      p.office ? ['Office', esc(p.office).replace(/(\d{2,3}-\d{3,4}-\d{4})/g, '<span class="nowrap">$1</span>')] : null,
+      p.research_area ? ['Research area', esc(p.research_area)] : null
+    ].filter(Boolean);
+    const icons = linkIcons(name, p.links);
+    return `<li class="prow${alum ? ' alum' : ''}" data-type="${esc(p.type || '')}">${photo(p)}
+      <div class="rbody">
+        <div class="rhead"><h4>${esc(name)}</h4>
+          <span class="ptype"><i class="tmark ${esc(p.type || 'none')}" aria-hidden="true"></i>${typeLabel(p.type)}</span>
+          ${note ? `<span class="rnote">${esc(note)}</span>` : ''}</div>
+        ${alum && p.current_position ? `<p class="rnow"><span class="rk">Current position</span> ${esc(p.current_position)}</p>` : ''}
+        <div class="rcols">
+          ${p.degrees && p.degrees.length ? `<ul class="rdeg">${p.degrees.map(degLine).join('')}</ul>` : ''}
+          ${meta.length || icons ? `<div class="rmeta">${meta.map(([k, v]) => `<p><span class="rk">${k}</span> <span class="rv">${v}</span></p>`).join('')}${icons}</div>` : ''}
+        </div>
+      </div></li>`;
+  };
+  const groupsHtml = (groups, alum, prefix) => groups.map((g, i) => `<div class="pgroup anchor" id="${prefix}-${i}">
     <h3 class="pgroup-h">${esc(g.group)} <span class="small" data-total="${g.people.length}">${g.people.length}</span></h3>
-    <ul class="pgrid${prefix === 'al' ? ' alum-grid' : ''}">${g.people.map(card).join('')}</ul></div>`).join('');
-  $('member-groups').innerHTML = groupsHtml(D.members, memberCard, 'mg');
-  $('alumni-groups').innerHTML = groupsHtml(D.alumni, alumCard, 'al');
+    <ul class="plist">${g.people.map(p => row(p, alum)).join('')}</ul></div>`).join('');
+  $('member-groups').innerHTML = groupsHtml(D.members, false, 'mg');
+  $('alumni-groups').innerHTML = groupsHtml(D.alumni, true, 'al');
   $('members-note').textContent = 'Grouped as in the lab list';
   $('alumni-note').textContent = 'Current position as last reported';
+  const jumps = (groups, prefix) => groups.map((g, i) => `<a href="#${prefix}-${i}">${esc(g.group)}</a>`).join('');
+  $('jump-members').innerHTML = jumps(D.members, 'mg');
+  $('jump-alumni').innerHTML = jumps(D.alumni, 'al');
 
-  // computational / experimental filter
-  const filter = $('type-filter');
-  const apply = t => {
-    let shown = 0;
-    document.querySelectorAll('.pcard').forEach(c => { const ok = !t || c.dataset.type === t; c.hidden = !ok; shown += ok; });
-    document.querySelectorAll('.pgroup').forEach(g => {
-      const vis = g.querySelectorAll('.pcard:not([hidden])').length, el = g.querySelector('[data-total]');
-      g.hidden = vis === 0;
-      el.textContent = t ? `${vis} of ${el.dataset.total}` : el.dataset.total;
+  /* ---------- current members / alumni view, kept in sync with the hash ---------- */
+  const views = { members: $('members'), alumni: $('alumni') };
+  const viewOf = id => (id === 'alumni' || /^al-\d+$/.test(id)) ? 'alumni' : 'members';
+  const hashId = () => { try { return decodeURIComponent(location.hash.slice(1)); } catch (e) { return ''; } };
+  let view = null;
+  function show(v) {
+    if (v === view) return false;
+    view = v;
+    views.members.hidden = v !== 'members';
+    views.alumni.hidden = v !== 'alumni';
+    $('jump-members').hidden = v !== 'members';
+    $('jump-alumni').hidden = v !== 'alumni';
+    document.querySelectorAll('.viewswitch a').forEach(a => {
+      if (a.dataset.view === v) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
     });
-    $('filter-count').textContent = t ? `${shown} of ${stats.members + stats.alumni} people` : '';
-  };
+    document.title = `${v === 'alumni' ? 'Alumni' : 'Members'} · CCEL · Seoul National University`;
+    applyFilter();
+    return true;
+  }
+  // bring a heading into view only when it is not already on screen below the header
+  function reveal(el) {
+    if (!el) return;
+    const h = el.querySelector('h2, h3') || el, r = h.getBoundingClientRect();
+    const bar = document.querySelector('.site-bar'), top = bar ? bar.getBoundingClientRect().bottom : 0;
+    if (r.top < top + 4 || r.top > window.innerHeight * (window.innerWidth < 768 ? 0.5 : 0.75)) el.scrollIntoView({ block: 'start' });
+  }
+  // view buttons: switch in place (the content below the bar changes), add a history entry so Back returns
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[data-view]');
+    if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
+    e.preventDefault();
+    const v = a.dataset.view;
+    if (location.hash !== '#' + v) history.pushState(null, '', '#' + v);
+    show(v);
+    reveal(views[v]);
+  });
+  // Back / Forward and typed hashes: the hash decides the view
+  window.addEventListener('popstate', () => show(viewOf(hashId())));
+  window.addEventListener('hashchange', () => {
+    const id = hashId(), changed = show(viewOf(id));
+    if (changed && id) reveal(document.getElementById(id));
+  });
+
+  /* ---------- computational / experimental filter (applies to the visible list) ---------- */
+  const filter = $('type-filter');
+  let type = '';
+  function applyFilter() {
+    let shown = 0, total = 0;
+    document.querySelectorAll('.prow').forEach(c => { c.hidden = !!type && c.dataset.type !== type; });
+    document.querySelectorAll('.pgroup').forEach(g => {
+      const vis = g.querySelectorAll('.prow:not([hidden])').length, el = g.querySelector('[data-total]');
+      g.hidden = vis === 0;
+      el.textContent = type ? `${vis} of ${el.dataset.total}` : el.dataset.total;
+      if (views[view] && views[view].contains(g)) { shown += vis; total += +el.dataset.total; }
+    });
+    $('filter-count').textContent = type ? `${shown} of ${total} ${view === 'alumni' ? 'alumni' : 'current members'}` : '';
+  }
   filter.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     filter.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-    apply(b.dataset.t);
+    type = b.dataset.t;
+    applyFilter();
   });
 
+  show(viewOf(hashId()));
   S.initHeader();
   S.initFooter();
   S.settleHash();

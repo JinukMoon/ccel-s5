@@ -182,6 +182,6 @@
   const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   window.S5 = { D, SH, esc, plain, asset, href, fmt, pct, cap, pubs, byNo, published, areaByNum, areaTitle, statusesPresent,
-    coverOf, pubOfCover, authorsHtml, sourceLine, ifHtml, pubLink, citeHtml, coverThumb, pinsHtml, keyPapers, highlightsHtml, linkIcons, profLinks, stats,
+    coverOf, pubOfCover, authorsHtml, sourceLine, ifHtml, pubLink, citeHtml, coverThumb, pinsHtml, keyPapers, highlightsHtml, ICON, linkIcons, profLinks, stats,
     initHeader, initFooter, settleHash, reduceMotion };
 })();
